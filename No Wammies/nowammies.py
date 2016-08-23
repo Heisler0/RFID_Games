@@ -16,11 +16,12 @@ print("Good luck!")
 sleep(1)
 
 
-def numberGenerator(int seed):
+def numberGenerator(seed):
     random1.seed(seed)
-    r[0] = random1.randint(6)
+    r = []
+    r.append(random1.randint(1, 6))
     for i in range (1, 6):
-        r[i] = random2.randint(6)
+        r.append(random2.randint(1, 6))
     return random2.choice(r)
 
 #Main
@@ -34,10 +35,10 @@ main = True
 while main:
     print("\nScore: " + str(score))
     card = raw_input("Select a card: ")
-    number = humberGenerator(card)
+    number = numberGenerator(card)
     if number > 3:
         print("\nWammie! Game over.")
-        print("Your final score is" + str(score) + ".")
+        print("Your final score is " + str(score) + ".")
         sleep(1)
         if score > highscore:
             highscore = score
