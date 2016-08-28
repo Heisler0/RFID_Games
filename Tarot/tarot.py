@@ -21,15 +21,14 @@ try:
         try:
             card = raw_input("Scan your fortune card: ")
             random.seed(card)
-            f = random.randrange(len(fortunes))
             print(".")
             sleep(1)
             print("..")
             sleep(1)
             print("...")
             sleep(1)
-            print(fortunes[f] + "\n")
-        except ValueError:
+            print(random.seed(fortunes) + "\n")
+	    except ValueError:
             print("Invalid input.\n")
 
 except KeyboardInterrupt:
