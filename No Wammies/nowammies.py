@@ -45,7 +45,8 @@ while main:
             print("New highscore!")
         else:
             print("Current highscore is " + str(highscore) + ".")
-        sleep(1)
+        sleep(1
+	score = 0)
         print("\nNew game starting now.")
     elif number == 0:
         print("Pffff...that's a dud, no points.")
