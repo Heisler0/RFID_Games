@@ -23,6 +23,14 @@ def cardSelect(playerName, playerCards):
 # Process a round given both players' selections
 # @return 0 if a draw, else 1 if player 1 wins, else 2
 def processRound(player1_sel, player2_sel):
+    print("\nRock")
+    sleep(1)
+    print("Paper")
+    sleep(1)
+    print("Scissors")
+    sleep(1)
+    print("Shoot!")
+    
     choices = ["Rock.", "Paper.", "Scissors."]
     sleep(1)
     print("\nPlayer 1 has selected " + choices[player1_sel])
@@ -53,7 +61,9 @@ def processRound(player1_sel, player2_sel):
 
 ##############################################
 #Begin the game
-
+print("Welcome to Python Rock, Paper, Scissors.")
+print("Have your 3 playing cards ready.")
+sleep(1)
 #First scan in the players' cards
 
 #Scanning Player 1's cards
@@ -91,55 +101,68 @@ sleep(1)
 print("Success! Player 2\'s cards have been scanned.\n")
 
 
-#Then start the rounds
-sleep(2)
-print("\nNow, let the match begin!")
-sleep(1)
-print("This match will be a best off " + str(rounds))
-sleep(1)
-print("Each player must win " + str(win_c) + " rounds to win the entire match!\n")
-sleep(2)
+#Game loop
+running = True
 
-
-#Main functionality of the game begins here
-player1_wins = 0
-player2_wins = 0
-
-round = 1
-
-while round <= rounds and player1_wins < win_c and player2_wins < win_c:
-    round_str = str(round)
-    print("Round " + round_str + ":")
-
-    player1_select = cardSelect("Player 1", player1)
-    player2_select = cardSelect("Player 2", player2)
-    result = processRound(player1_select, player2_select)
-
-    if result == 1:
-        print("Player 1 wins round " + round_str + ".")
-        palyer1_wins += 1
-    elif result == 2:
-        print("Player 2 wins round " + round_str + ".")
-        player2_wins += 1
-    else:
-        print("Round " + round_str + " resulted in a draw, the round will recommemce.\n")
-    sleep(1)
-    if result != 0:
-        print("The score is: " + "Player 1: " + str(player1_wins) + "    Player 2: " + str(player2_wins))
-        print("End of round " + round_str + ".\n")
-    sleep(2)
+while running:
     
+    #Then start the rounds
+    sleep(2)
+    print("\nNow, let the match begin!")
+    sleep(1)
+    print("This match will be a best off " + str(rounds))
+    sleep(1)
+    print("Each player must win " + str(win_c) + " rounds to win the entire match!\n")
+    sleep(2)
 
-if player1_wins == player2_wins:
-    print("The match has ended in a draw.")
-elif player1_wins > player2_wins:
-    print("Player 1 has won the match!")
-else:
-    print("Player 2 has won the match!")
+
+    #Main functionality of the game begins here
+    player1_wins = 0
+    player2_wins = 0
+
+    round = 1
+
+    while round <= rounds and player1_wins < win_c and player2_wins < win_c:
+        round_str = str(round)
+        print("Round " + round_str + ":")
+
+        player1_select = cardSelect("Player 1", player1)
+        player2_select = cardSelect("Player 2", player2)
+        result = processRound(player1_select, player2_select)
+
+        if result == 1:
+            print("Player 1 wins round " + round_str + ".")
+            player1_wins += 1
+            round += 1
+        elif result == 2:
+            print("Player 2 wins round " + round_str + ".")
+            player2_wins += 1
+            round += 1
+        else:
+            print("Round " + round_str + " resulted in a draw, the round will recommemce.\n")
+        sleep(1)
+        if result != 0:
+            print("The score is: " + "Player 1: " + str(player1_wins) + "    Player 2: " + str(player2_wins))
+            print("End of round " + round_str + ".\n")
+        sleep(2)
+        
+
+    if player1_wins == player2_wins:
+        print("The match has ended in a draw.")
+    elif player1_wins > player2_wins:
+        print("Player 1 has won the match!")
+    else:
+        print("Player 2 has won the match!")
+
+    #Replay?
+    sleep(1)
+    print("\nIf you would like to play again press enter.")
+    quit = raw_input("Or type quit to exit the game: ")
+    if quit == "quit":
+        running = False
+    #End of Game Loop
 
 print("\nGame Over, thanks for playing.")
-    
-
 #End of Game
 ###################################
 
