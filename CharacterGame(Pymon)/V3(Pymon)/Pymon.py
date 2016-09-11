@@ -1,6 +1,5 @@
 from random import Random
 
-
 class Pymon:
 
     names = ['Venusaur', 'Charizard', 'Blastoise', 'Butterfree', 'Beedrill', 'Pidgeot', 'Raichu',
