@@ -65,17 +65,13 @@ while running:
             #Card Selection loop
             selecting = True
             while selecting:
-                try:
-                    sel = raw_input("\nPlayer " + str(player) + " select your card: ")
-                    cards.index(sel)
-                    try:
-                        used.index(sel)
-                        print("That was not a valid card, please choose another card.")
-                    except ValueError:
-                        used.append(sel)
-                        selecting = False
-                except ValueError:
+                sel = raw_input("\nPlayer " + str(player) + " select your card: ")
+                if((sel in cards) and (sel not in used)):
+                    used.append(sel)
+                    selecting = False                
+                else:
                     print("That was not a valid card, please choose another card.")
+
             #End Selection Loop
             print("Tick...")
             sleep(1)
