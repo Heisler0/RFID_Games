@@ -38,13 +38,10 @@ index = 0
 while index < 4:
     screen.fill(colors[index])
     display.update()
-    card = inputbox.ask(screen, "Scan your card")
-    try:
-        cards.index(card)
-    except ValueError:
+    card = inputbox.ask(screen, "Scan a unique card")
+    if(card not in cards):
         index = index + 1
         cards.append(card)
-
 #Game loop
 main = True
 round = 1
