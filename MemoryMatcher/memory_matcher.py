@@ -40,12 +40,11 @@ print("Scan in your playing cards.")
 i = 0
 while i < diff:
     card = raw_input("Scan a unique card now: ")
-    try:
-        scanned.index(card)
-        print("That card was already scanned, please scan another card.")
-    except ValueError:
+    if(card not in scanned):
         scanned.append(card)
         i += 1
+    else:
+        print("That card was already scanned, please scan another card.")
 
 print("Success! All cards have been scanned.")
 
