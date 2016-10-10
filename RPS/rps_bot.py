@@ -97,7 +97,7 @@ while running:
     print("This match will be a best off " + str(rounds))
     sleep(1)
     print("Each player must win " + str(win_c) + " rounds to win the entire match!\n")
-    sleep(2)
+    sleep(2) 
 
 
     #Main functionality of the game begins here
@@ -140,7 +140,7 @@ while running:
     #Replay?
     sleep(1)
     print("\nIf you would like to play again press enter.")
-    if raw_input("Or type quit to exit the game: ") == quit:
+    if raw_input("Or type quit to exit the game: ") == "quit":
         running = False
     #End of Game Loop
 
