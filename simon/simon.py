@@ -7,13 +7,22 @@ from time import sleep
  
 pygame.font.init()
  
+pygame.mixer.init()
+ 
 #Game variables
  
 random = Random()
  
 round = 1
  
+random_mode = False
+ 
 reader = reader.Reader(0xffff, 0x0035, 8, 8, should_reset=False)
+ 
+#Sounds
+lose = Sound("Sad_Trombone.wav")
+correct = Sound("cheer.wav")
+incorrect = Sound("airhorn.wav")
  
 #Colors
 red = (255, 0, 0)
@@ -44,6 +53,7 @@ screen = display.set_mode(size)
  
 #On incorrect guess, screen flashes all colors
 def gameover():
+    lose.play()
     for i in range(len(colors)):
         setDisplay(white, "Game Over")
         sleep(0.35)
@@ -74,6 +84,27 @@ strings = {
             yellow : "YELLOW"
             }
  
+#If r key is pressed, set random_mode to true
+#If any key is pressed, return
+def mode():
+    f = pygame.font.Font(default, 26)
+    screen.fill(white)
+    line1 = f.render("Press r for Random Mode", True, black)
+    line2 = f.render("Press any key for Normal Mode", True, black)
+    screen.blit(line1, (10, 100))
+    screen.blit(line2, (10, 150))
+    display.update()
+    while True:
+        events = pygame.event.get()
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    random_mode = True
+                return;
+ 
+ 
+#Select Mode
+mode()
  
 #Simon Sequence
 seq = []
@@ -86,7 +117,15 @@ while play:
     sleep(1.5)
     setDisplay(white, "Simon Says")
     sleep(2)
-    seq.append(random.choice(colors))
+ 
+    if(random_mode):
+        k = 0
+        seq = []
+        while k < round:
+            seq.append(random.choice(colors))
+            k += 1
+    else:
+        seq.append(random.choice(colors))
  
        
     for i in range(len(seq)):
@@ -108,9 +147,12 @@ while play:
         setDisplay(white, strings[c])
  
         if c != seq[j]:
+            incorrect.play()
             sleep(1)
             gameover()
             play = False
+        else:
+            correct.play()
  
         j += 1
  
