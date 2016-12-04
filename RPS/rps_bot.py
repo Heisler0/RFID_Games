@@ -39,23 +39,17 @@ def processRound(player1_sel):
     print("\nPlayer 1 has selected " + choices[player1_sel])
     sleep(1)
     print("Player 2 has selected " + choices[player2_sel] + "\n")
+
     if player1_sel == player2_sel:
         return 0
-    if player1_sel == 0:
-        if player2_sel == 2:
-            return 1
-        else:
-            return 2
-    if player1_sel == 1:
-        if player2_sel == 0:
-            return 1
-        else:
-            return 2
-    if player1_sel == 2:
-        if player2_sel == 1:
-            return 1
-        else:
-            return 2
+    else if player1_sel == 0 and player2_sel == 2:
+        return 1
+    else if player1_sel == 1 and player2_sel == 0:
+        return 1
+    else if player1_sel == 2 and player2_sel == 1:
+        return 1
+    else:
+        return 2
 
 
 #End of function definitions

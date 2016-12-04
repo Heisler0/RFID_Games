@@ -1,8 +1,20 @@
-import sys, pygame, inputbox
+import sys, pygame
+from keyboard_alike import reader
 from pygame import *
+from pygame.mixer import Sound
 from random import Random
 from time import sleep
-
+ 
+pygame.font.init()
+ 
+#Game variables
+ 
+random = Random()
+ 
+round = 1
+ 
+reader = reader.Reader(0xffff, 0x0035, 8, 8, should_reset=False)
+ 
 #Colors
 red = (255, 0, 0)
 green = (0, 255, 0)
@@ -11,62 +23,98 @@ yellow = (255, 255, 0)
 white = (255, 255, 255)
 black = (0, 0, 0)
 colors = [red, green, blue, yellow]
-
+ 
+#RFID dictionary, maps cards to colors
+cards = {
+            "09756356" : red,
+            "09359668" : green,
+            "09144068" : blue,
+            "19110900" : yellow
+            }
+ 
 #Screen
 size = (448, 388)
 display.set_caption("Simon")
 screen = display.set_mode(size)
-
-#Game variables
-random = Random()
-def color(c):
-    screen.fill(c)
-    display.update()
+ 
+#Change the screen color
+##def color(c):
+##    screen.fill(c)
+##    display.update()
+ 
+#On incorrect guess, screen flashes all colors
 def gameover():
     for i in range(len(colors)):
-        color(white)
-        sleep(0.5)
-        color(colors[i])
-        sleep(0.5)
-    color(black)
-    sleep(3)
-#Player's color cards
-cards = []
-
-#Scan player's cards
-index = 0
-while index < 4:
-    screen.fill(colors[index])
+        setDisplay(white, "Game Over")
+        sleep(0.35)
+        setDisplay(colors[i], "Game Over")
+        sleep(0.35)
+    setDisplay(black)
+    sleep(1)
+    pygame.quit()
+ 
+#Text Display
+default = font.get_default_font()
+font = font.Font(default, 60)
+x = 50
+y = 100
+ 
+#Change the screen color, and if text is provided set text to the screen
+def setDisplay(c, s=""):
+    screen.fill(c)
+    text = font.render(s, True, black)
+    screen.blit(text, (x, y))
     display.update()
-    card = inputbox.ask(screen, "Scan a unique card")
-    if(card not in cards):
-        index = index + 1
-        cards.append(card)
+ 
+#Color names
+strings = {
+            red : "RED",
+            green : "GREEN",
+            blue : "BLUE",
+            yellow : "YELLOW"
+            }
+ 
+ 
+#Simon Sequence
+seq = []
+ 
 #Game loop
-main = True
-round = 1
-while main:
-    #Simon Sequence
-    seq = []
-    play = True
-    while play:
-        color(white)
-        sleep(2)
-        seq.append(random.randrange(4))
-        for i in range(len(seq)):
-            color(colors[seq[i]])
+play = True
+while play:
+    reader.initialize()
+    setDisplay(white, "Round " + str(round))
+    sleep(1.5)
+    setDisplay(white, "Simon Says")
+    sleep(2)
+    seq.append(random.choice(colors))
+ 
+       
+    for i in range(len(seq)):
+        c = seq[i]
+        setDisplay(c, strings[c])
+        sleep(1)
+        setDisplay(white)
+        sleep(0.25)
+    setDisplay(white)
+ 
+    j = 0
+    while j < len(seq) and play:
+ 
+        sel = ""
+        while sel not in cards:
+            sel = reader.read_card()  
+       
+        c = cards[sel]
+        setDisplay(white, strings[c])
+ 
+        if c != seq[j]:
             sleep(1)
-            color(white)
-            sleep(0.25)
-        color(white)
-        i = 0
-        while i < len(seq):
-            sel = inputbox.ask(screen, "Scan your card")
-            if cards.index(sel) != seq[i]:
-                gameover()
-                play = False
-                i = len(seq)
-            i = i + 1
-           
-    
-    
+            gameover()
+            play = False
+ 
+        j += 1
+ 
+    round += 1
+ 
+    reader.disconnect()
+    sleep(1)
